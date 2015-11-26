@@ -2,6 +2,7 @@
 define(['app','api'], function (app) {
     app.register.controller('StudentController',['$scope','$rootScope','api', function ($scope,$rootScope,api) {
 		$scope.list=function(){
+			$rootScope.__MODULE_NAME = 'Students';
 			$scope.YearLevels=[];
 			$scope.Students=[];
 			$scope.Countries=[];
