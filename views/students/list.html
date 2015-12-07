@@ -1,4 +1,7 @@
 <div ng-controller="StudentController" ng-init="list()">
+	<button class="btn btn-primary btn-fab bottom right fixed" ng-click="openModal()">
+	<span class="glyphicon glyphicon-transfer" aria-hidden="true"></span>
+	</button>
 	<div class="row">
 		<div class="col-md-6">
 			<div class="list-group">
@@ -21,8 +24,8 @@
 						  </ul>
 					</div>
 					<div class="btn-group">
-						<button type="button" class="btn btn-default" ng-click="updateStatus('students')">Students</button>
-						<button type="button" class="btn btn-default" ng-click="updateStatus('sections')">Sections</button>
+						<button type="button" class="btn btn-default ng-class:{'btn-primary': State==='students'}" ng-click="updateStatus('students')">Students</button>
+						<button type="button" class="btn btn-default ng-class:{'btn-primary': State==='sections'}" ng-click="updateStatus('sections')">Sections</button>
 					</div>
 				</div>
 				<div class="list-group-canvas list-group-search-results" ng-if="State==='students'">
@@ -32,9 +35,9 @@
 					</div>
 				</div>
 				<div class="list-group-canvas list-group-search-results" ng-if="State==='sections'">
-					<div class="list-group-item" ng-repeat="classlist in ClassLists" ng-click="openSectionInfo(classlist)">
-						<h4 class="list-group-item-heading">{{classlist.section.name}}</h4>
-						<p class="list-group-item-text">{{classlist.section.year_level}}</p>
+					<div class="list-group-item ng-class:{active: classlist.section.name===ClassList.section.name}" ng-repeat="classlist in ClassLists" ng-click="openSectionInfo(classlist)">
+						<h4 class="list-group-item-heading">{{classlist.section.year_level}} - {{classlist.section.name}}</h4>
+						<p class="list-group-item-text">{{classlist.students.boys.length}} Boys | {{classlist.students.girls.length}} Girls</p>
 					</div>
 				</div>
 				<div class="list-group-item list-group-search-box">
@@ -50,22 +53,23 @@
 			<div class="list-group">
 				<div class="list-group-item list-group-header">
 					<button class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span></button>
-					<label for="">Grade I Blue</label>
+					<label for="" ng-if="ClassList">{{ClassList.section.year_level}} - {{ClassList.section.name}}</label>
+					<label for="" ng-if="!ClassList">Class List Information</label>
 				</div>
 				<div class="list-group-canvas">
 					<div class="list-group-item">
 						<dl class="dl-horizontal">
 							<dt>Name</dt>
-							<dd>Blue</dd>
+							<dd>{{ClassList.section.name}}</dd>
 							<dt>Level</dt>
-							<dd>Grade I</dd>
+							<dd>{{ClassList.section.year_level}}</dd>
 						</dl>
 					</div>
 					<div class="list-group-item list-group-header">
 						<h5 class="pull-left">Class List</h5>
 						<div class="btn-group pull-right">
-							<button type="button" class="btn btn-default">Boys</button>
-							<button type="button" class="btn btn-default">Girls</button>
+							<button type="button" class="btn btn-default ng-class:{'btn-primary': genderState==='boys'}" ng-click="genderUpdate('boys')">Boys</button>
+							<button type="button" class="btn btn-default ng-class:{'btn-primary': genderState==='girls'}" ng-click="genderUpdate('girls')">Girls</button>
 						</div>
 						<div class="clearfix"></div>
 					</div>
@@ -73,20 +77,25 @@
 						<table class="table table-bordered table-condensed">
 							<thead>
 								<tr>
-									<th>ID</th>
-									<th>Student</th>
-									<th><button class="btn btn-default"><span class="glyphicon glyphicon-transfer"></span></button></th>
+									<th class="text-center col-md-4">ID</th>
+									<th class="text-center col-md 7">Name</th>
+									<th class="text-center col-md-1"><button class="btn btn-default"><span class="glyphicon glyphicon-transfer"></span></button></th>
 								</tr>
 								<tr>
-									<td><input class="form-control" type="text" placeholder="ID"/></td>
-									<td><input class="form-control" type="text" placeholder="Full Name"/></td>
-									<td><button class="btn btn-success"><span class="glyphicon glyphicon-plus"></span></button></td>
+									<td class="col-md-4"><input class="form-control" type="text" placeholder="ID"/></td>
+									<td class="col-md-7"><input class="form-control" type="text" placeholder="Full Name"/></td>
+									<td class="col-md-1"><button class="btn btn-success"><span class="glyphicon glyphicon-plus"></span></button></td>
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td>1</td>
-									<td>Ted Philip</td>
+								<tr ng-repeat="students in ClassList.students.boys" ng-if="genderState==='boys'">
+									<td>{{students.id}}</td>
+									<td>{{students.name}}</td>
+									<td><button class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button></td>
+								</tr>
+								<tr ng-repeat="students in ClassList.students.girls" ng-if="genderState==='girls'">
+									<td>{{students.id}}</td>
+									<td>{{students.name}}</td>
 									<td><button class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button></td>
 								</tr>
 							</tbody>

@@ -1,14 +1,15 @@
 "use strict";
 define(['app','api'], function (app) {
-    app.register.controller('StudentController',['$scope','$rootScope','api', function ($scope,$rootScope,api) {
+    app.register.controller('StudentController',['$scope','$rootScope','$uibModal','api', function ($scope,$rootScope,$uibModal,api) {
 		$scope.list=function(){
-			$rootScope.__MODULE_NAME = 'Students';
+			$rootScope.__MODULE_NAME = 'Class List';
 			$scope.YearLevels=[];
 			$scope.Students=[];
 			$scope.Countries=[];
 			$scope.Provinces=[];
 			$scope.ClassLists=[];
 			$scope.State='sections';
+			$scope.genderState='boys';
 			$scope.hasInformation = false;
 			$scope.hasNoInformation = true;
 			api.GET('year_levels',function success(response){
@@ -46,6 +47,10 @@ define(['app','api'], function (app) {
 		};
 		$scope.openSectionInfo=function(classlist){
 			$scope.ClassList=classlist;
+			console.log($scope.ClassList);
+		};
+		$scope.genderUpdate=function(genderState){
+			$scope.genderState=genderState;
 		};
     }]);
 });
