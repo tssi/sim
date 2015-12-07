@@ -52,6 +52,9 @@ define(['app','api'], function (app) {
 		$scope.genderUpdate=function(genderState){
 			$scope.genderState=genderState;
 		};
+		$scope.removeClassListInfo = function(){
+			$scope.ClassList = null;
+		};
     }]);
 });
 
