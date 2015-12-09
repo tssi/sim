@@ -15,18 +15,13 @@
 							<span class="glyphicon glyphicon-chevron-down"></span>
 						  </button>
 						  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-							<li><a href="#/">Sort</a></li>
-							<li><a href="#/">Filter</a></li>
-							<li><a href="#/">Go to Page</a></li>
-							<li role="separator" class="divider"></li>
-							<li><a href="#/">Some other link</a></li>
+							<li class="dropdown-header">VIEW BY</li>
+							<li><a ng-click="updateState('sections')">Sections</a></li>
+							<li><a ng-click="updateState('students')">Students</a></li>
 							
 						  </ul>
 					</div>
-					<div class="btn-group">
-						<button type="button" class="btn btn-default ng-class:{'btn-primary': State==='students'}" ng-click="updateStatus('students')">Students</button>
-						<button type="button" class="btn btn-default ng-class:{'btn-primary': State==='sections'}" ng-click="updateStatus('sections')">Sections</button>
-					</div>
+					<label>Class list by {{State}}</label>
 				</div>
 				<div class="list-group-canvas list-group-search-results" ng-if="State==='students'">
 					<div class="list-group-item ng-class:{active: student.first_name===Student.first_name}" ng-repeat="student in Students" ng-click="openStudentInfo(student)">
@@ -57,14 +52,6 @@
 					<label for="" ng-if="!ClassList">Class List Information</label>
 				</div>
 				<div class="list-group-canvas" ng-show="ClassList">
-					<div class="list-group-item">
-						<dl class="dl-horizontal">
-							<dt>Name</dt>
-							<dd>{{ClassList.section.name}}</dd>
-							<dt>Level</dt>
-							<dd>{{ClassList.section.year_level}}</dd>
-						</dl>
-					</div>
 					<div class="list-group-item list-group-header">
 						<h5 class="pull-left">Class List</h5>
 						<div class="btn-group pull-right">

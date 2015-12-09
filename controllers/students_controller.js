@@ -32,7 +32,7 @@ define(['app','api'], function (app) {
 				$scope.ClassLists=response.data;	
 			});
 		};
-		$scope.updateStatus=function(state){
+		$scope.updateState=function(state){
 			$scope.State=state;
 		};
 		$scope.openStudentInfo=function(student){
