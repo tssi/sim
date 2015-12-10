@@ -8,9 +8,10 @@ define(['app','api'], function (app) {
 			$scope.Countries=[];
 			$scope.Provinces=[];
 			$scope.ClassLists=[];
+			$scope.Sections=[];
 			$scope.State={
 						  list:"sections",
-						  view:"edit",
+						  view:"move",
 						  gender:"boys"
 						 };
 			$scope.hasInformation = false;
@@ -31,8 +32,10 @@ define(['app','api'], function (app) {
 				$scope.Provinces=response.data;	
 			});
 			api.GET('class_lists',function success(response){
-				console.log(response.data,'class list');
 				$scope.ClassLists=response.data;	
+			});
+			api.GET('sections',function success(response){
+				$scope.Sections=response.data;	
 			});
 		};
 		$scope.updateState=function(ui,state){

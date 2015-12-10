@@ -104,7 +104,9 @@
 									</td>
 									<td>
 										<select name="" id="" class="form-control">
-											
+											<optgroup ng-repeat="(key,value) in YearLevels" label="{{value.name}}">
+												<option >{{value.name}}</option>
+											</optgroup>
 										</select>
 									</td>
 									<td class="col-md-1"><button class="btn btn-success"><span class="glyphicon glyphicon-floppy-disk"></span></button></td>
