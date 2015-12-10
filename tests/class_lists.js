@@ -8,9 +8,10 @@ define(['model'],function($model){
 				data:[
 					  {
 					    "section": {
-							"id": 1,
-							"name": "Blue",
-							"year_level": "Grade 9"
+							"id": 5,
+							"name": "Earth",
+							"year_level": "Grade 9",
+							"year_level_id": "G9"
 					    },
 					    "students": 
 							{
@@ -46,9 +47,10 @@ define(['model'],function($model){
 					  },
 					  {
 					    "section": {
-							"id": 2,
-							"name": "Green",
-							"year_level": "Grade 8"
+							"id": 3,
+							"name": "Gold",
+							"year_level": "Grade 8",
+							"year_level_id": "G8"
 					    },
 					    "students": 
 							{

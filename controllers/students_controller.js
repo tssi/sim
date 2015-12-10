@@ -16,7 +16,7 @@ define(['app','api'], function (app) {
 						 };
 			$scope.hasInformation = false;
 			$scope.hasNoInformation = true;
-			api.GET('year_levels',function success(response){
+			api.GET('year_levels',{limit:'less'},function success(response){
 				$scope.YearLevels = response.data;	
 			});
 			api.GET('students',function success(response){

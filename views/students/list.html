@@ -104,8 +104,8 @@
 									</td>
 									<td>
 										<select name="" id="" class="form-control">
-											<optgroup ng-repeat="(key,value) in YearLevels" label="{{value.name}}">
-												<option >{{value.name}}</option>
+											<optgroup ng-repeat="(key,yearlevel) in YearLevels | filter:{id:ClassList.section.year_level_id}" label="{{yearlevel.name}}">
+												<option ng-repeat="section in Sections | filter:{year_level_id:yearlevel.id}" ng-if="section.id!=ClassList.section.id">{{section.name}}</option>
 											</optgroup>
 										</select>
 									</td>
