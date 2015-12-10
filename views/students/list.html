@@ -55,8 +55,8 @@
 					<div class="list-group-item list-group-header">
 						<h5 class="pull-left">Class List</h5>
 						<div class="btn-group pull-right">
-							<button type="button" class="btn btn-default ng-class:{'btn-primary': genderState==='boys'}" ng-click="genderUpdate('boys')">Boys</button>
-							<button type="button" class="btn btn-default ng-class:{'btn-primary': genderState==='girls'}" ng-click="genderUpdate('girls')">Girls</button>
+							<button type="button" class="btn btn-default btn-sm ng-class:{'btn-primary': genderState==='boys'}" ng-click="genderUpdate('boys')">BOYS</button>
+							<button type="button" class="btn btn-default btn-sm ng-class:{'btn-primary': genderState==='girls'}" ng-click="genderUpdate('girls')">GIRLS</button>
 						</div>
 						<div class="clearfix"></div>
 					</div>
@@ -87,6 +87,42 @@
 								</tr>
 							</tbody>
 						</table>
+						<table class="table table-bordered table-condensed">
+							<thead>
+								<tr>
+									<th class="text-center col-md-4">ID</th>
+									<th class="text-center col-md 7">Name</th>
+									<th class="text-center col-md-1"><button class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button></th>
+								</tr>
+								<tr>
+									<td>
+										<select name="" id="" class="form-control">
+											<option value="">Assign</option>
+											<option value="">Transfer</option>
+										</select>
+									</td>
+									<td>
+										<select name="" id="" class="form-control">
+											
+										</select>
+									</td>
+									<td class="col-md-1"><button class="btn btn-success"><span class="glyphicon glyphicon-floppy-disk"></span></button></td>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="students in ClassList.students.boys" ng-if="genderState==='boys'">
+									<td>{{students.id}}</td>
+									<td>{{students.name}}</td>
+									<td><button class="btn btn-default"><span class="glyphicon glyphicon-transfer"></span></button></td>
+								</tr>
+								<tr ng-repeat="students in ClassList.students.girls" ng-if="genderState==='girls'">
+									<td>{{students.id}}</td>
+									<td>{{students.name}}</td>
+									<td><button class="btn btn-default"><span class="glyphicon glyphicon-transfer"></span></button></td>
+								</tr>
+							</tbody>
+						</table>
+						
 					</div>
 				</div>
 				<div class="list-group-canvas" ng-hide="ClassList">
