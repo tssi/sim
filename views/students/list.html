@@ -96,32 +96,44 @@
 								</tr>
 								<tr>
 									<td>
-										<select name="" id="" class="form-control">
+										<select name="" id="" class="form-control" ng-model="SelectedAction">
 											<option value="">Select Action</option>
-											<option value="">Transfer</option>
-											<option value="">Assign</option>
+											<option value="transfer">Transfer</option>
+											<option value="assign">Assign</option>
 										</select>
 									</td>
 									<td>
-										<select name="" id="" class="form-control">
+										<div class="text-center help-text" ng-hide="SelectedAction"><a href="" class="btn btn-xs btn-default disabled"><span class="glyphicon glyphicon-transfer"></span></a>Click to select.</div>
+										<select name="" id="" class="form-control" ng-if="SelectedAction==='transfer'">
 											<optgroup ng-repeat="(key,yearlevel) in YearLevels | filter:{id:ClassList.section.year_level_id}" label="{{yearlevel.name}}">
 												<option ng-repeat="section in Sections | filter:{year_level_id:yearlevel.id}" ng-if="section.id!=ClassList.section.id">{{section.name}}</option>
 											</optgroup>
 										</select>
+										<select name="" id="" class="form-control" ng-if="SelectedAction==='assign'">
+											<optgroup ng-repeat="(key,yearlevel) in YearLevels | filter:{order:(ClassList.order+1)}" label="{{yearlevel.name}}">
+												<option ng-repeat="section in Sections | filter:{year_level_id:yearlevel.id}">{{section.name}}</option>
+											</optgroup>
+											<optgroup ng-repeat="(key,yearlevel) in YearLevels | filter:{id:'G8'}" label="{{yearlevel.name}}">
+												<option ng-repeat="section in Sections | filter:{year_level_id:yearlevel.id}">{{section.name}}</option>
+											</optgroup>
+											<optgroup ng-repeat="(key,yearlevel) in YearLevels | filter:{order:ClassList.order+2}" label="{{yearlevel.name}}">
+												<option ng-repeat="section in Sections | filter:{year_level_id:yearlevel.id}">{{section.name}}</option>
+											</optgroup>
+										</select>
 									</td>
-									<td class="col-md-1"><button class="btn btn-success"><span class="glyphicon glyphicon-floppy-disk"></span></button></td>
+									<td class="col-md-1"><button class="btn btn-success" ng-click="saveSelectedStudents()"><span class="glyphicon glyphicon-floppy-disk"></span></button></td>
 								</tr>
 							</thead>
 							<tbody>
 								<tr ng-repeat="students in ClassList.students.boys" ng-if="State.gender==='boys'">
 									<td>{{students.id}}</td>
 									<td>{{students.name}}</td>
-									<td><button class="btn btn-default"><span class="glyphicon glyphicon-transfer"></span></button></td>
+									<td><button class="btn btn-default ng-class:{'btn-primary':SelectedStudents[students.id]}" ng-disabled="!SelectedAction" ng-click="toggleSelectStudents(students.id)"><span class="glyphicon glyphicon-transfer"></span></button></td>
 								</tr>
 								<tr ng-repeat="students in ClassList.students.girls" ng-if="State.gender==='girls'">
 									<td>{{students.id}}</td>
 									<td>{{students.name}}</td>
-									<td><button class="btn btn-default"><span class="glyphicon glyphicon-transfer"></span></button></td>
+									<td><button class="btn btn-default ng-class:{'btn-primary':SelectedStudents[students.id]}" ng-disabled="!SelectedAction" ng-click="toggleSelectStudents(students.id)"><span class="glyphicon glyphicon-transfer"></span></button></td>
 								</tr>
 							</tbody>
 						</table>

@@ -9,6 +9,8 @@ define(['app','api'], function (app) {
 			$scope.Provinces=[];
 			$scope.ClassLists=[];
 			$scope.Sections=[];
+			$scope.SelectedStudents={};
+			$scope.ActiveStudents=[];
 			$scope.State={
 						  list:"sections",
 						  view:"move",
@@ -37,6 +39,10 @@ define(['app','api'], function (app) {
 			api.GET('sections',function success(response){
 				$scope.Sections=response.data;	
 			});
+			$scope.$watch('State.view',function(newValue, oldValue){
+				$scope.SelectedStudents={};
+				$scope.ActiveStudents=[];
+			});
 		};
 		$scope.updateState=function(ui,state){
 			$scope.State[ui]=state;
@@ -53,9 +59,35 @@ define(['app','api'], function (app) {
 		};
 		$scope.openSectionInfo=function(classlist){
 			$scope.ClassList=classlist;
+			for(var index in $scope.YearLevels){
+				var yearlevel=$scope.YearLevels[index];
+				if(yearlevel.id===$scope.ClassList.section.year_level_id){
+					$scope.ClassList.order=yearlevel.order;
+				}
+			};
 		};
 		$scope.removeClassListInfo = function(){
 			$scope.ClassList = [];
+		};
+		$scope.toggleSelectStudents=function(id){
+			$scope.SelectedStudents[id] = !$scope.SelectedStudents[id]; 
+		};
+		$scope.saveSelectedStudents=function(){
+			$scope.ActiveStudents=[];
+			for(var id in $scope.SelectedStudents){
+				if($scope.SelectedStudents[id]){
+					$scope.ActiveStudents.push(id);
+				}
+			};
+			var data = {
+						section_id:$scope.ClassList.section.id,
+						students:$scope.ActiveStudents,
+						action:$scope.SelectedAction
+					   };
+			api.POST('class_lists',data,function(success){
+				//update current class list
+				$scope.State.view='edit';
+			});
 		};
     }]);
 });

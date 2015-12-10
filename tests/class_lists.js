@@ -31,15 +31,15 @@ define(['model'],function($model){
 						     ],
 							 "girls": [
 							  {
-							    "id": "1",
+							    "id": "4",
 							    "name": "Anne Curtis",
 							  },
 							  {
-							    "id": "2",
+							    "id": "5",
 							    "name": "Marian Rivera",
 							  },
 							  {
-							    "id": "3",
+							    "id": "6",
 							    "name": "Rhian Ramos",
 							  }
 						     ]
@@ -78,19 +78,19 @@ define(['model'],function($model){
 						     ],
 							 "girls": [
 							  {
-							    "id": "1",
+							    "id": "6",
 							    "name": "Maine Mendoza",
 							  },
 							  {
-							    "id": "2",
+							    "id": "7",
 							    "name": "Max Collins",
 							  },
 							  {
-							    "id": "3",
+							    "id": "8",
 							    "name": "Coleen Garcia",
 							  },
 							  {
-							    "id": "4",
+							    "id": "9",
 							    "name": "Yeng Constantino",
 							  }
 						     ]
