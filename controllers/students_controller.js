@@ -8,8 +8,11 @@ define(['app','api'], function (app) {
 			$scope.Countries=[];
 			$scope.Provinces=[];
 			$scope.ClassLists=[];
-			$scope.State='sections';
-			$scope.genderState='boys';
+			$scope.State={
+						  list:"sections",
+						  view:"edit",
+						  gender:"boys"
+						 };
 			$scope.hasInformation = false;
 			$scope.hasNoInformation = true;
 			api.GET('year_levels',function success(response){
@@ -32,8 +35,8 @@ define(['app','api'], function (app) {
 				$scope.ClassLists=response.data;	
 			});
 		};
-		$scope.updateState=function(state){
-			$scope.State=state;
+		$scope.updateState=function(ui,state){
+			$scope.State[ui]=state;
 		};
 		$scope.openStudentInfo=function(student){
 			$scope.Student=student;
@@ -47,13 +50,9 @@ define(['app','api'], function (app) {
 		};
 		$scope.openSectionInfo=function(classlist){
 			$scope.ClassList=classlist;
-			console.log($scope.ClassList);
-		};
-		$scope.genderUpdate=function(genderState){
-			$scope.genderState=genderState;
 		};
 		$scope.removeClassListInfo = function(){
-			$scope.ClassList = null;
+			$scope.ClassList = [];
 		};
     }]);
 });
