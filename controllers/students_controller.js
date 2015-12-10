@@ -59,6 +59,7 @@ define(['app','api'], function (app) {
 		};
 		$scope.openSectionInfo=function(classlist){
 			$scope.ClassList=classlist;
+			$scope.State.gender='boys';
 			for(var index in $scope.YearLevels){
 				var yearlevel=$scope.YearLevels[index];
 				if(yearlevel.id===$scope.ClassList.section.year_level_id){
@@ -67,7 +68,7 @@ define(['app','api'], function (app) {
 			};
 		};
 		$scope.removeClassListInfo = function(){
-			$scope.ClassList = [];
+			$scope.ClassList = null;
 		};
 		$scope.toggleSelectStudents=function(id){
 			$scope.SelectedStudents[id] = !$scope.SelectedStudents[id]; 
