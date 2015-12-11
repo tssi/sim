@@ -95,6 +95,38 @@ define(['model'],function($model){
 							  }
 						     ]
 							}
+					  },
+					  {
+					    "section": {
+							"id": 1,
+							"name": "A",
+							"year_level": "Grade 1",
+							"year_level_id": "G1"
+					    }
+					  },
+					  {
+					    "section": {
+							"id": 2,
+							"name": "B",
+							"year_level": "Grade 2",
+							"year_level_id": "G2"
+					    }
+					  },
+					  {
+					    "section": {
+							"id": 4,
+							"name": "C",
+							"year_level": "Grade 3",
+							"year_level_id": "G3"
+					    }
+					  },
+					  {
+					    "section": {
+							"id": 6,
+							"name": "D",
+							"year_level": "Grade 4",
+							"year_level_id": "G4"
+					    }
 					  }
 					]
 			}

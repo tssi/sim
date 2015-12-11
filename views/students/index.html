@@ -1,0 +1,133 @@
+<div ng-controller="StudentController" ng-init="list()">
+	<div class="row">
+		<div class="col-md-6">
+			<div class="list-group">
+				<div class="list-group-item list-group-header">
+					<div class="btn-group btn-group-sm pull-right" uib-dropdown>
+						<button class="btn btn-default disabled">1 - 5 of 10</button>
+						<button class="btn btn-default"><span class="glyphicon glyphicon-chevron-left"></span></button>
+						<button class="btn btn-default"><span class="glyphicon glyphicon-chevron-right"></span></button>
+						
+						  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" uib-dropdown-toggle>
+							<span class="glyphicon glyphicon-chevron-down"></span>
+						  </button>
+						  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+							<li><a href="#/">Sort</a></li>
+							<li><a href="#/">Filter</a></li>
+							<li><a href="#/">Go to Page</a></li>
+							<li role="separator" class="divider"></li>
+							<li><a href="#/">Some other link</a></li>
+							
+						  </ul>
+					</div>
+					<label class="clear-fix">Students</label>
+				</div>
+				<div class="list-group-canvas list-group-search-results" >
+					<div class="list-group-item" ng-repeat="student in Students" ng-click="openStudentInfo(student)">
+						<h4 class="list-group-item-heading">{{student.first_name}} {{student.middle_name}} {{student.last_name}} {{student.suffix_name}}</h4>
+						<p class="list-group-item-text">{{student.id}} | <span ng-repeat="yearlevel in YearLevels | filter:{id: student.year_level_id}" ng-if="student.year_level_id">{{yearlevel.name}}</span></p>
+					</div>
+				</div>
+				<div class="list-group-item list-group-search-box">
+					<div class="input-group"> 
+						<div class="input-group-btn"><button class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button></div>
+						<input type="text" class="form-control" placeholder="Search" />
+						<div class="input-group-btn"><button class="btn btn-default"><span class="glyphicon glyphicon-remove"></span></button></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="list-group">
+				<div class="list-group-item list-group-header">
+					<button class="btn btn-xs btn-danger pull-right" ng-click="removeStudentInfo()"> <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+					<label ng-if="Student">{{Student.first_name}} {{Student.middle_name}} {{Student.last_name}} {{Student.suffix_name}}</label>
+					<label ng-if="!Student">Student Information</label>
+					<div class="btn-group btn-group-xs pull-right" uib-dropdown>
+						  <button class="btn btn-default dropdown-toggle" type="button"  uib-dropdown-toggle>
+							<span class="glyphicon glyphicon-chevron-down"></span>
+						  </button>
+						  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+							<li><a href="#/">Edit</a></li>
+							<li><a href="#/">Delete</a></li>
+							<li role="separator" class="divider"></li>
+							<li><a href="#/">Some other link</a></li>
+							
+						  </ul>
+					</div>
+				</div>
+				<div class="list-group-canvas">
+					<div class="list-group-item list-group-header" ng-show="hasInformation">
+						<h5>Basic Information</h5>
+					</div>
+					<div class="list-group-item" ng-show="hasInformation">
+						<div class="form-group">
+							<div class="row">
+								<div class="col-md-6">
+									<label for="">Student</label>
+									<div class="row">
+										<div class="col-md-12">
+											<span>{{Student.first_name}} {{Student.middle_name}} {{Student.last_name}} {{Student.suffix_name}}</span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<label for="">Year Level</label>
+									<div class="row">
+										<div class="col-md-12">
+											<span>{{Student.year_level_id}}</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="list-group-item" ng-show="hasInformation">
+						<dl class="dl-horizontal">
+								<dt>Gender</dt>
+								<dd>{{Student.gender}}</dd>
+								<dt>Birthday</dt>
+								<dd>{{Student.birthday}}</dd>
+								<dt>Birth Place</dt>
+								<dd>{{Student.birthplace}}</dd>
+								<dt>Religion</dt>
+								<dd>{{Student.religion}}</dd>
+								<dt>Citizenship</dt>
+								<dd>{{Student.citizenship}}</dd>
+						</dl>
+					</div>
+					<div class="list-group-item list-group-header" ng-show="hasInformation">
+						<h5>Contact Information</h5>
+					</div>
+					<div class="list-group-item" ng-show="hasInformation">
+						<dl class="dl-horizontal">
+							<dt>Landline</dt>
+							<dd ng-repeat="contact_number in Student.contact_numbers | filter: {type:'landline'}">{{contact_number.number}}</dd>
+							<dt>Mobile</dt>
+							<dd ng-repeat="contact_number in Student.contact_numbers | filter: {type:'mobile'}">{{contact_number.number}}</dd>
+							<dt>Current Address</dt>
+							<dd>
+								<address ng-repeat="address in Student.addressess | filter: {type:'current'}">
+									{{address.address}}, {{address.barangay}},<br/>
+									{{address.city}}, <span ng-repeat="province in Provinces | filter: {id: address.province}" ng-if="address.province">{{province.name}}</span>, <span ng-repeat="country in Countries | filter: {id: address.country}" ng-if="address.country">{{country.name}}</span><br/>
+								</address>
+							</dd>
+							<dt>Home Address</dt>
+							<dd>
+								<address ng-repeat="address in Student.addressess | filter: {type:'permanent'}">
+									{{address.address}}, {{address.barangay}},<br/>
+									{{address.city}}, <span ng-repeat="province in Provinces | filter: {id: address.province}" ng-if="address.province">{{province.name}}</span>, <span ng-repeat="country in Countries | filter: {id: address.country}" ng-if="address.country">{{country.name}}</span><br/>
+								</address>
+							</dd>
+						</dl>
+					</div>
+					<div class="list-group-item">
+						<div class="well" ng-show="hasNoInformation">
+							<span>No Information</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

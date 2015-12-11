@@ -3,6 +3,34 @@ define(['app','api'], function (app) {
     app.register.controller('StudentController',['$scope','$rootScope','$uibModal','api', function ($scope,$rootScope,$uibModal,api) {
 		$scope.list=function(){
 			$rootScope.__MODULE_NAME = 'Class List';
+			function getClassLists(data){
+				$scope.DataLoading = true;
+				api.GET('class_lists',data,function success(response){
+					$scope.ClassLists=response.data;
+					$scope.NextPage=response.meta.next;
+					$scope.PrevPage=response.meta.prev;
+					$scope.TotalItems=response.meta.count;
+					$scope.LastItem=response.meta.page*response.meta.limit;
+					$scope.FirstItem=$scope.LastItem-(response.meta.limit-1);
+					if($scope.LastItem>$scope.TotalItems){
+						$scope.LastItem=$scope.TotalItems;
+					};
+					$scope.DataLoading = false;		
+				});
+			}
+			$scope.initLedgers=function(){
+				$scope.ActivePage = 1;
+				$scope.NextPage=null;
+				$scope.PrevPage=null;
+				$scope.DataLoading = false;
+				getClassLists({page:$scope.ActivePage});
+			};
+			$scope.initLedgers();
+			$scope.navigatePage=function(page){
+				$scope.ActivePage=page;
+				getClassLists({page:$scope.ActivePage});
+			};
+			
 			$scope.YearLevels=[];
 			$scope.Students=[];
 			$scope.Countries=[];
@@ -32,9 +60,6 @@ define(['app','api'], function (app) {
 			});
 			api.GET('provinces',function success(response){
 				$scope.Provinces=response.data;	
-			});
-			api.GET('class_lists',function success(response){
-				$scope.ClassLists=response.data;	
 			});
 			api.GET('sections',function success(response){
 				$scope.Sections=response.data;	
@@ -117,6 +142,18 @@ define(['app','api'], function (app) {
 			api.DELETE('class_lists',data,function(response){
 				$scope.ClassList.students[gender].splice(index,1);
 				});		   
+		};
+		$scope.filterClassList=function(classlist){
+			var searchBox = $scope.searchClassList;
+			var keyword = new RegExp(searchBox,'i');	
+			var test = keyword.test(classlist.section.name) || keyword.test(classlist.section.year_level);
+			return !searchBox || test;
+		};
+		$scope.confirmSearch = function(){
+			getClassLists({page:$scope.ActivePage,keyword:$scope.searchClassList,fields:['section.year_level','section.name']});
+		}
+		$scope.clearSearch = function(){
+			$scope.searchClassList = null;
 		};
     }]);
 });
