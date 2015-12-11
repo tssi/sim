@@ -69,21 +69,21 @@
 									<th class="text-center col-md-1"><button class="btn btn-default" ng-click="updateState('view','move')" ><span class="glyphicon glyphicon-transfer"></span></button></th>
 								</tr>
 								<tr>
-									<td class="col-md-4"><input class="form-control" type="text" placeholder="ID"/></td>
-									<td class="col-md-7"><input class="form-control" type="text" placeholder="Full Name"/></td>
-									<td class="col-md-1"><button class="btn btn-success"><span class="glyphicon glyphicon-plus"></span></button></td>
+									<td class="col-md-4"><input class="form-control" type="text" placeholder="ID" ng-model="studentID"/></td>
+									<td class="col-md-7"><input class="form-control" type="text" placeholder="Full Name" ng-model="studentName"/></td>
+									<td class="col-md-1"><button class="btn btn-success" ng-click="newStudent()"><span class="glyphicon glyphicon-plus"></span></button></td>
 								</tr>
 							</thead>
 							<tbody>
 								<tr ng-repeat="students in ClassList.students.boys" ng-if="State.gender==='boys'">
 									<td>{{students.id}}</td>
 									<td>{{students.name}}</td>
-									<td><button class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button></td>
+									<td><button class="btn btn-danger" ng-click="removeStudent($index)"><span class="glyphicon glyphicon-remove"></span></button></td>
 								</tr>
 								<tr ng-repeat="students in ClassList.students.girls" ng-if="State.gender==='girls'">
 									<td>{{students.id}}</td>
 									<td>{{students.name}}</td>
-									<td><button class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button></td>
+									<td><button class="btn btn-danger" ng-click="removeStudent($index)"><span class="glyphicon glyphicon-remove"></span></button></td>
 								</tr>
 							</tbody>
 						</table>

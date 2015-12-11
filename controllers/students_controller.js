@@ -90,6 +90,34 @@ define(['app','api'], function (app) {
 				$scope.State.view='edit';
 			});
 		};
+		$scope.newStudent=function(){
+			var data = {
+						section_id:$scope.ClassList.section.id,
+						students:[$scope.studentID],
+						action:'assign'
+					   };
+			api.POST('class_lists',data,function(success){
+				//newStudent should come from response.data
+				var newStudent={
+						    id:$scope.studentID,
+							name:$scope.studentName
+						   };
+				$scope.ClassList.students[$scope.State.gender].push(newStudent);
+				$scope.studentID=null;
+				$scope.studentName=null;
+			});
+		};
+		$scope.removeStudent=function(index){
+			var gender=$scope.State.gender;
+			var student=$scope.ClassList.students[gender][index];
+			var data = {
+						section_id:$scope.ClassList.section.id,
+						students:[student.id]
+					   };
+			api.DELETE('class_lists',data,function(response){
+				$scope.ClassList.students[gender].splice(index,1);
+				});		   
+		};
     }]);
 });
 
