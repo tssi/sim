@@ -8,9 +8,10 @@ define(['model'],function($model){
 				data:[
 					  {
 					    "section": {
-							"id": 1,
-							"name": "Blue",
-							"year_level": "Grade 9"
+							"id": 5,
+							"name": "Earth",
+							"year_level": "Grade 9",
+							"year_level_id": "G9"
 					    },
 					    "students": 
 							{
@@ -30,15 +31,15 @@ define(['model'],function($model){
 						     ],
 							 "girls": [
 							  {
-							    "id": "1",
+							    "id": "4",
 							    "name": "Anne Curtis",
 							  },
 							  {
-							    "id": "2",
+							    "id": "5",
 							    "name": "Marian Rivera",
 							  },
 							  {
-							    "id": "3",
+							    "id": "6",
 							    "name": "Rhian Ramos",
 							  }
 						     ]
@@ -46,9 +47,10 @@ define(['model'],function($model){
 					  },
 					  {
 					    "section": {
-							"id": 2,
-							"name": "Green",
-							"year_level": "Grade 8"
+							"id": 3,
+							"name": "Gold",
+							"year_level": "Grade 8",
+							"year_level_id": "G8"
 					    },
 					    "students": 
 							{
@@ -76,23 +78,55 @@ define(['model'],function($model){
 						     ],
 							 "girls": [
 							  {
-							    "id": "1",
+							    "id": "6",
 							    "name": "Maine Mendoza",
 							  },
 							  {
-							    "id": "2",
+							    "id": "7",
 							    "name": "Max Collins",
 							  },
 							  {
-							    "id": "3",
+							    "id": "8",
 							    "name": "Coleen Garcia",
 							  },
 							  {
-							    "id": "4",
+							    "id": "9",
 							    "name": "Yeng Constantino",
 							  }
 						     ]
 							}
+					  },
+					  {
+					    "section": {
+							"id": 1,
+							"name": "A",
+							"year_level": "Grade 1",
+							"year_level_id": "G1"
+					    }
+					  },
+					  {
+					    "section": {
+							"id": 2,
+							"name": "B",
+							"year_level": "Grade 2",
+							"year_level_id": "G2"
+					    }
+					  },
+					  {
+					    "section": {
+							"id": 4,
+							"name": "C",
+							"year_level": "Grade 3",
+							"year_level_id": "G3"
+					    }
+					  },
+					  {
+					    "section": {
+							"id": 6,
+							"name": "D",
+							"year_level": "Grade 4",
+							"year_level_id": "G4"
+					    }
 					  }
 					]
 			}

@@ -7,39 +7,59 @@
 			<div class="list-group">
 				<div class="list-group-item list-group-header">
 					<div class="btn-group btn-group-sm pull-right" uib-dropdown>
-						<button class="btn btn-default disabled">1 - 5 of 10</button>
-						<button class="btn btn-default"><span class="glyphicon glyphicon-chevron-left"></span></button>
-						<button class="btn btn-default"><span class="glyphicon glyphicon-chevron-right"></span></button>
+						<button class="btn btn-default disabled">{{FirstItem}} - {{LastItem}} of {{TotalItems}}</button>
+						<button class="btn btn-default" ng-disabled="!PrevPage || DataLoading" ng-click="navigatePage(PrevPage)"><span class="glyphicon glyphicon-chevron-left"></span></button>
+						<button class="btn btn-default" ng-disabled="!NextPage || DataLoading" ng-click="navigatePage(NextPage)"><span class="glyphicon glyphicon-chevron-right"></span></button>
 						
 						  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" uib-dropdown-toggle>
 							<span class="glyphicon glyphicon-chevron-down"></span>
 						  </button>
 						  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
 							<li class="dropdown-header">VIEW BY</li>
-							<li><a ng-click="updateState('sections')">Sections</a></li>
-							<li><a ng-click="updateState('students')">Students</a></li>
+							<li><a ng-click="updateState('list','sections')">Sections</a></li>
+							<li><a ng-click="updateState('list','students')">Students</a></li>
 							
 						  </ul>
 					</div>
-					<label>Class list by {{State}}</label>
+					<label>Class list by {{State.list}}</label>
 				</div>
-				<div class="list-group-canvas list-group-search-results" ng-if="State==='students'">
-					<div class="list-group-item ng-class:{active: student.first_name===Student.first_name}" ng-repeat="student in Students" ng-click="openStudentInfo(student)">
+				<div class="list-group-canvas list-group-search-results" ng-if="State.list==='students'">
+					<div class="list-group-item text-center" ng-if="searchClassList">
+						<h4 class="list-group-item-heading">Search result(s) for <b><i>{{searchClassList}}</i></b>.</h4>
+						<p class="list-group-item-text">
+							Click the <span class="glyphicon glyphicon-search" aria-hidden="true"></span> to look further.
+							Click the <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> to cancel.
+						</p>
+					</div>
+					<div class="list-group-item ng-class:{active: student.first_name===Student.first_name}" ng-repeat="student in Students " ng-click="openStudentInfo(student)">
 						<h4 class="list-group-item-heading">{{student.first_name}} {{student.middle_name}} {{student.last_name}} {{student.suffix_name}}</h4>
 						<p class="list-group-item-text">{{student.id}} | <span ng-repeat="yearlevel in YearLevels | filter:{id: student.year_level_id}" ng-if="student.year_level_id">{{yearlevel.name}}</span></p>
 					</div>
+					<div class="list-group-item text-center" ng-if="!Students.length || DataLoading">
+						Loading...
+					</div>
 				</div>
-				<div class="list-group-canvas list-group-search-results" ng-if="State==='sections'">
-					<div class="list-group-item ng-class:{active: classlist.section.name===ClassList.section.name}" ng-repeat="classlist in ClassLists" ng-click="openSectionInfo(classlist)">
+				<div class="list-group-canvas list-group-search-results" ng-if="State.list==='sections'">
+					<div class="list-group-item text-center" ng-if="searchClassList">
+						<h4 class="list-group-item-heading">Search result(s) for <b><i>{{searchClassList}}</i></b>.</h4>
+						<p class="list-group-item-text">
+							Click the <span class="glyphicon glyphicon-search" aria-hidden="true"></span> to look further.
+							Click the <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> to cancel.
+						</p>
+					</div>
+					<div class="list-group-item ng-class:{active: classlist.section.name===ClassList.section.name}" ng-hide="DataLoading" ng-repeat="classlist in ClassLists | filter: filterClassList" ng-click="openSectionInfo(classlist)">
 						<h4 class="list-group-item-heading">{{classlist.section.year_level}} - {{classlist.section.name}}</h4>
 						<p class="list-group-item-text">{{classlist.students.boys.length}} Boys | {{classlist.students.girls.length}} Girls</p>
+					</div>
+					<div class="list-group-item text-center" ng-if="!ClassLists.length || DataLoading">
+						Loading...
 					</div>
 				</div>
 				<div class="list-group-item list-group-search-box">
 					<div class="input-group"> 
-						<div class="input-group-btn"><button class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button></div>
-						<input type="text" class="form-control" placeholder="Search" />
-						<div class="input-group-btn"><button class="btn btn-default"><span class="glyphicon glyphicon-remove"></span></button></div>
+						<div class="input-group-btn"><button class="btn btn-default" ng-click="confirmSearch()"><span class="glyphicon glyphicon-search"></span></button></div>
+						<input type="text" class="form-control" placeholder="Search" ng-model="searchClassList"/>
+						<div class="input-group-btn"><button class="btn btn-default" ng-click="clearSearch()"><span class="glyphicon glyphicon-remove"></span></button></div>
 					</div>
 				</div>
 			</div>
@@ -47,7 +67,7 @@
 		<div class="col-md-6">
 			<div class="list-group">
 				<div class="list-group-item list-group-header">
-					<button class="btn btn-danger btn-xs" ng-click="removeClassListInfo()"><span class="glyphicon glyphicon-remove"></span></button>
+					<button class="btn btn-danger btn-xs pull-right" ng-click="removeClassListInfo()"><span class="glyphicon glyphicon-remove"></span></button>
 					<label for="" ng-if="ClassList">{{ClassList.section.year_level}} - {{ClassList.section.name}}</label>
 					<label for="" ng-if="!ClassList">Class List Information</label>
 				</div>
@@ -55,38 +75,89 @@
 					<div class="list-group-item list-group-header">
 						<h5 class="pull-left">Class List</h5>
 						<div class="btn-group pull-right">
-							<button type="button" class="btn btn-default ng-class:{'btn-primary': genderState==='boys'}" ng-click="genderUpdate('boys')">Boys</button>
-							<button type="button" class="btn btn-default ng-class:{'btn-primary': genderState==='girls'}" ng-click="genderUpdate('girls')">Girls</button>
+							<button type="button" class="btn btn-default btn-sm ng-class:{'btn-primary': State.gender==='boys'}" ng-click="updateState('gender','boys')">BOYS</button>
+							<button type="button" class="btn btn-default btn-sm ng-class:{'btn-primary': State.gender==='girls'}" ng-click="updateState('gender','girls')">GIRLS</button>
 						</div>
 						<div class="clearfix"></div>
 					</div>
 					<div class="list-group-item">
-						<table class="table table-bordered table-condensed">
+						<table class="table table-bordered table-condensed" ng-show="State.view==='edit'">
 							<thead>
 								<tr>
 									<th class="text-center col-md-4">ID</th>
 									<th class="text-center col-md 7">Name</th>
-									<th class="text-center col-md-1"><button class="btn btn-default"><span class="glyphicon glyphicon-transfer"></span></button></th>
+									<th class="text-center col-md-1"><button class="btn btn-default" ng-click="updateState('view','move')" ><span class="glyphicon glyphicon-transfer"></span></button></th>
 								</tr>
 								<tr>
-									<td class="col-md-4"><input class="form-control" type="text" placeholder="ID"/></td>
-									<td class="col-md-7"><input class="form-control" type="text" placeholder="Full Name"/></td>
-									<td class="col-md-1"><button class="btn btn-success"><span class="glyphicon glyphicon-plus"></span></button></td>
+									<td class="col-md-4"><input class="form-control" type="text" placeholder="ID" ng-model="studentID"/></td>
+									<td class="col-md-7"><input class="form-control" type="text" placeholder="Full Name" ng-model="studentName"/></td>
+									<td class="col-md-1"><button class="btn btn-success" ng-click="newStudent()"><span class="glyphicon glyphicon-plus"></span></button></td>
 								</tr>
 							</thead>
 							<tbody>
-								<tr ng-repeat="students in ClassList.students.boys" ng-if="genderState==='boys'">
+								<tr ng-repeat="students in ClassList.students.boys" ng-if="State.gender==='boys'">
 									<td>{{students.id}}</td>
 									<td>{{students.name}}</td>
-									<td><button class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button></td>
+									<td><button class="btn btn-danger" ng-click="removeStudent($index)"><span class="glyphicon glyphicon-remove"></span></button></td>
 								</tr>
-								<tr ng-repeat="students in ClassList.students.girls" ng-if="genderState==='girls'">
+								<tr ng-repeat="students in ClassList.students.girls" ng-if="State.gender==='girls'">
 									<td>{{students.id}}</td>
 									<td>{{students.name}}</td>
-									<td><button class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button></td>
+									<td><button class="btn btn-danger" ng-click="removeStudent($index)"><span class="glyphicon glyphicon-remove"></span></button></td>
 								</tr>
 							</tbody>
 						</table>
+						<table class="table table-bordered table-condensed" ng-show="State.view==='move'">
+							<thead>
+								<tr>
+									<th class="text-center col-md-4">ID</th>
+									<th class="text-center col-md 7">Name</th>
+									<th class="text-center col-md-1"><button class="btn btn-danger" ng-click="updateState('view','edit')"><span class="glyphicon glyphicon-remove"></span></button></th>
+								</tr>
+								<tr>
+									<td>
+										<select name="" id="" class="form-control" ng-model="SelectedAction">
+											<option value="">Select Action</option>
+											<option value="transfer">Transfer</option>
+											<option value="assign">Assign</option>
+										</select>
+									</td>
+									<td>
+										<div class="text-center help-text" ng-hide="SelectedAction"><a href="" class="btn btn-xs btn-default disabled"><span class="glyphicon glyphicon-transfer"></span></a>Click to select.</div>
+										<select name="" id="" class="form-control" ng-if="SelectedAction==='transfer'">
+											<optgroup ng-repeat="(key,yearlevel) in YearLevels | filter:{id:ClassList.section.year_level_id}" label="{{yearlevel.name}}">
+												<option ng-repeat="section in Sections | filter:{year_level_id:yearlevel.id}" ng-if="section.id!=ClassList.section.id">{{section.name}}</option>
+											</optgroup>
+										</select>
+										<select name="" id="" class="form-control" ng-if="SelectedAction==='assign'">
+											<optgroup ng-repeat="(key,yearlevel) in YearLevels | filter:{order:(ClassList.order+1)}" label="{{yearlevel.name}}">
+												<option ng-repeat="section in Sections | filter:{year_level_id:yearlevel.id}">{{section.name}}</option>
+											</optgroup>
+											<optgroup ng-repeat="(key,yearlevel) in YearLevels | filter:{id:'G8'}" label="{{yearlevel.name}}">
+												<option ng-repeat="section in Sections | filter:{year_level_id:yearlevel.id}">{{section.name}}</option>
+											</optgroup>
+											<optgroup ng-repeat="(key,yearlevel) in YearLevels | filter:{order:ClassList.order+2}" label="{{yearlevel.name}}">
+												<option ng-repeat="section in Sections | filter:{year_level_id:yearlevel.id}">{{section.name}}</option>
+											</optgroup>
+										</select>
+									</td>
+									<td class="col-md-1"><button class="btn btn-success" ng-click="saveSelectedStudents()"><span class="glyphicon glyphicon-floppy-disk"></span></button></td>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="students in ClassList.students.boys" ng-if="State.gender==='boys'">
+									<td>{{students.id}}</td>
+									<td>{{students.name}}</td>
+									<td><button class="btn btn-default ng-class:{'btn-primary':SelectedStudents[students.id]}" ng-disabled="!SelectedAction" ng-click="toggleSelectStudents(students.id)"><span class="glyphicon glyphicon-transfer"></span></button></td>
+								</tr>
+								<tr ng-repeat="students in ClassList.students.girls" ng-if="State.gender==='girls'">
+									<td>{{students.id}}</td>
+									<td>{{students.name}}</td>
+									<td><button class="btn btn-default ng-class:{'btn-primary':SelectedStudents[students.id]}" ng-disabled="!SelectedAction" ng-click="toggleSelectStudents(students.id)"><span class="glyphicon glyphicon-transfer"></span></button></td>
+								</tr>
+							</tbody>
+						</table>
+						
 					</div>
 				</div>
 				<div class="list-group-canvas" ng-hide="ClassList">
