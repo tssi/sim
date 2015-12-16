@@ -40,10 +40,10 @@
 		<div class="col-md-6">
 			<div class="list-group">
 				<div class="list-group-item list-group-header">
-					<button class="btn btn-xs btn-danger pull-right" ng-click="removeStudentInfo()"> <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
 					<label ng-if="Student">{{Student.first_name}} {{Student.middle_name}} {{Student.last_name}} {{Student.suffix_name}}</label>
 					<label ng-if="!Student">Student Information</label>
-					<div class="btn-group btn-group-xs pull-right" uib-dropdown>
+					<div class="pull-right">
+						<div class="btn-group btn-group-xs" uib-dropdown>
 						  <button class="btn btn-default dropdown-toggle" type="button"  uib-dropdown-toggle>
 							<span class="glyphicon glyphicon-chevron-down"></span>
 						  </button>
@@ -54,6 +54,8 @@
 							<li><a href="#/">Some other link</a></li>
 							
 						  </ul>
+						</div>
+						<button class="btn btn-xs btn-danger" ng-click="removeStudentInfo()"> <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
 					</div>
 				</div>
 				<div class="list-group-canvas">
